@@ -3,7 +3,6 @@ module main
 import os
 import gg
 
-//
 const (
 	c_win_width  = 1280
 	c_win_height = 720
@@ -77,10 +76,7 @@ pub fn (mut mpv MPVPlayer) play_video(path string) {
 pub fn (mut mpv MPVPlayer) update_texture() {
 	resolution := [c_win_width, c_win_height]
 
-	// HACK: Magic Number
-	// TODO: I still don't know what the fuck this does.
-	// It currently only works for 1280x720 resolution.
-	pitch := int(5120)
+	pitch := int(4 * c_win_width)
 
 	rend_params := [
 		C.mpv_render_param{C.MPV_RENDER_PARAM_SW_SIZE, resolution.data},
