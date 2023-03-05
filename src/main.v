@@ -62,6 +62,7 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 }
 
 pub fn (mut mpv MPVPlayer) play_video(path string) {
+	println('Playing: ${path}')
 	C.mpv_command_async(mpv.i_mpv_handle, 0, [&char('loadfile'.str), &char(path.str), &char(0)].data)
 }
 
@@ -126,6 +127,13 @@ fn main() {
 		// FNs
 		init_fn: window.init
 		frame_fn: window.draw
+		// Events
+		keydown_fn: fn (key gg.KeyCode, modifier gg.Modifier, _ voidptr) {
+			if key == .q || key == .escape {
+				println('Exiting!')
+				exit(1)
+			}
+		}
 	)
 
 	window.ctx.run()
