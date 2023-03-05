@@ -3,6 +3,13 @@ module main
 import os
 import gg
 
+//
+const (
+	c_win_width  = 1280
+	c_win_height = 720
+)
+
+//
 [heap]
 pub struct MPVPlayer {
 mut:
@@ -11,7 +18,7 @@ mut:
 
 	i_mpv_should_draw bool
 
-	i_pixels  [720][1280]u32
+	i_pixels  [c_win_height][c_win_width]u32
 	i_texture &gg.Image = unsafe { nil }
 pub mut:
 	ctx &gg.Context = unsafe { nil }
@@ -54,7 +61,7 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 	// C.mpv_render_context_set_update_callback(mpv.i_mpv_handle, on_mpv_render_update, &voidptr(0))
 
 	// Texture
-	i_texture_id := mpv.ctx.new_streaming_image(1280, 720, 4, pixel_format: .rgba8)
+	i_texture_id := mpv.ctx.new_streaming_image(c_win_width, c_win_height, 4, pixel_format: .rgba8)
 	mpv.i_texture = mpv.ctx.get_cached_image_by_idx(i_texture_id)
 
 	//
@@ -68,8 +75,12 @@ pub fn (mut mpv MPVPlayer) play_video(path string) {
 
 [direct_array_access]
 pub fn (mut mpv MPVPlayer) update_texture() {
-	resolution := [1280, 720]
-	pitch := int(5120) // magic number?
+	resolution := [c_win_width, c_win_height]
+
+	// HACK: Magic Number
+	// TODO: I still don't know what the fuck this does.
+	// It currently only works for 1280x720 resolution.
+	pitch := int(5120)
 
 	rend_params := [
 		C.mpv_render_param{C.MPV_RENDER_PARAM_SW_SIZE, resolution.data},
@@ -89,8 +100,8 @@ pub fn (mut mpv MPVPlayer) update_texture() {
 
 	// fuck it we ballin
 	// converts RGB to ABGR
-	for y in 0 .. 720 {
-		for x in 0 .. 1280 {
+	for y in 0 .. c_win_height {
+		for x in 0 .. c_win_width {
 			// 0XBB_GG_RR => 0xAA_BB_GG_RR
 			mpv.i_pixels[y][x] = mpv.i_pixels[y][x] | (255 << 24)
 		}
@@ -99,11 +110,25 @@ pub fn (mut mpv MPVPlayer) update_texture() {
 	mpv.i_texture.update_pixel_data(&mpv.i_pixels)
 }
 
+pub fn (mut mpv MPVPlayer) draw_texture() {
+	t_res := mpv.ctx.window_size()
+
+	// Note: some bullshit math to make the video always centered and fits into the window.
+	mut factor := f64(c_win_height) / f64(t_res.height)
+
+	if factor == 0.0 {
+		factor = 1.0
+	}
+
+	mpv.ctx.draw_image((t_res.width - int(c_win_width / factor)) / 2, 0, int(c_win_width / factor),
+		int(c_win_height / factor), mpv.i_texture)
+}
+
 pub fn (mut mpv MPVPlayer) draw(_ voidptr) {
 	mpv.ctx.begin()
 
 	mpv.update_texture()
-	mpv.ctx.draw_image(0, 0, 1280, 720, mpv.i_texture)
+	mpv.draw_texture()
 
 	mpv.ctx.end()
 }
@@ -121,8 +146,8 @@ fn main() {
 	}
 
 	window.ctx = gg.new_context(
-		width: 1280
-		height: 720
+		width: c_win_width
+		height: c_win_height
 		user_data: window
 		// FNs
 		init_fn: window.init
