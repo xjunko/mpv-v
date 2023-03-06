@@ -190,6 +190,7 @@ fn main() {
 	}
 
 	window.ctx = gg.new_context(
+		window_title: "World's Simplest Video Player"
 		width: c_win_width
 		height: c_win_height
 		user_data: window
