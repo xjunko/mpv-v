@@ -26,3 +26,6 @@ bin/
 # assets
 assets/*
 Observation
+
+# TODO: Windows testing
+src/thirdparty/*

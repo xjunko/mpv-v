@@ -11,9 +11,20 @@ pub type MPVHandle = voidptr
 pub type MPVRenderContext = voidptr
 
 [typedef]
+struct C.mpv_event_property {
+pub:
+	name   &u8
+	format int
+	data   &voidptr
+}
+
+pub type MPVEventProperty = C.mpv_event_property
+
+[typedef]
 struct C.mpv_event {
 pub:
 	event_id int
+	data     &MPVEventProperty
 }
 
 pub type MPVEvent = C.mpv_event
@@ -31,6 +42,8 @@ pub type MPVRenderParameter = C.mpv_render_param
 pub fn C.mpv_create() &MPVHandle
 pub fn C.mpv_initialize(&MPVHandle) int
 pub fn C.mpv_destroy(&MPVHandle)
+
+pub fn C.mpv_observe_property(&MPVHandle, u64, &char, int) int
 
 pub fn C.mpv_request_log_messages(&MPVHandle, &u8) int
 
