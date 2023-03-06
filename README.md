@@ -20,7 +20,7 @@ clear && v fmt -w . && v -cc clang (or gcc) -d show_fps .
 
 I don't have a windows machine currently but you should also be able to get it working as long as you point the compiler to mpv's dll.
 
-# Featues
+# Features
 
 It has a _*lot*_ of features, such as:
 
