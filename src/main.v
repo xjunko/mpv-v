@@ -12,8 +12,8 @@ const (
 [heap]
 pub struct MPVPlayer {
 mut:
-	i_mpv_handle  &C.mpv_handle = unsafe { nil }
-	i_mpv_context &C.mpv_render_context = unsafe { nil }
+	i_mpv_handle  &MPVHandle        = unsafe { nil }
+	i_mpv_context &MPVRenderContext = unsafe { nil }
 
 	i_mpv_should_draw bool
 
@@ -37,9 +37,9 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 	temp_adv_control_hack := int(0)
 
 	params := [
-		C.mpv_render_param{C.MPV_RENDER_PARAM_API_TYPE, 'sw'.str},
-		C.mpv_render_param{C.MPV_RENDER_PARAM_ADVANCED_CONTROL, &temp_adv_control_hack},
-		C.mpv_render_param{0, &voidptr(0)},
+		MPVRenderParameter{C.MPV_RENDER_PARAM_API_TYPE, 'sw'.str},
+		MPVRenderParameter{C.MPV_RENDER_PARAM_ADVANCED_CONTROL, &temp_adv_control_hack},
+		MPVRenderParameter{0, &voidptr(0)},
 	]
 
 	if C.mpv_render_context_create(&mpv.i_mpv_context, mpv.i_mpv_handle, params.data) < 0 {
