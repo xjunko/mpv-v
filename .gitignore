@@ -29,3 +29,5 @@ Observation
 
 # TODO: Windows testing
 src/thirdparty/*
+include/
+libmpv-2.dll

@@ -18,7 +18,9 @@ clear && v fmt -w . && v -cc clang (or gcc) -d show_fps .
 
 ## To Windows User
 
-I don't have a windows machine currently but you should also be able to get it working as long as you point the compiler to mpv's dll.
+* Get MPV Shared library from [libmpv@sourceforge.net](https://sourceforge.net/projects/mpv-player-windows/files/libmpv/)
+* Copy `include` folder and `libmpv-2.dll` into project folder
+* And you're ready to go!
 
 # Features
 

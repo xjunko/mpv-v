@@ -2,9 +2,15 @@
 module main
 
 // C Header(s) to include
-#include <mpv/client.h>
-#include <mpv/render.h>
-#pkgconfig --libs --cflags mpv
+$if !windows {
+	#include <mpv/client.h>
+	#include <mpv/render.h>
+	#pkgconfig --libs --cflags mpv
+} $else {
+	#include <@VMODROOT/include/mpv/client.h>
+	#include <@VMODROOT/include/mpv/render.h>
+	#flag "@VMODROOT/libmpv-2.dll"
+}
 
 // Structs
 pub type MPVHandle = voidptr
