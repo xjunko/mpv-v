@@ -162,7 +162,8 @@ pub fn (mut mpv MPVPlayer) draw_overlay() {
 		gg.Color{0, 0, 0, 100})
 
 	// NOTE: lol
-	mpv.ctx.draw_text(5, c_win_height - c_win_font_size, '${int(mpv.i_video_position / 60.0)}:${int(mpv.i_video_position) % 60}/${int(mpv.i_video_duration / 60.0)}:${int(mpv.i_video_duration) % 60}',
+	playing_at_str := '${int(mpv.i_video_position / 60.0)}:${int(mpv.i_video_position) % 60:02}/${int(mpv.i_video_duration / 60.0)}:${int(mpv.i_video_duration) % 60}'
+	mpv.ctx.draw_text(5, c_win_height - c_win_font_size, playing_at_str,
 		color: gg.Color{255, 255, 255, 255}
 		align: .left
 		size: c_win_font_size
