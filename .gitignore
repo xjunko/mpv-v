@@ -27,6 +27,13 @@ bin/
 assets/*
 Observation
 
+# Local files
+mpv-v
+*.mp4
+*.mp3
+*.webm
+
+
 # TODO: Windows testing
 src/thirdparty/*
 include/
