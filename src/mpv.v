@@ -52,7 +52,7 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 		panic('Failed to init mpv sw context.')
 	}
 
-	// Temporary hack
+	// Permanent hack
 	on_mpv_events := fn [mut mpv] (_ voidptr) {
 		spawn mpv.on_mpv_events()
 	}
