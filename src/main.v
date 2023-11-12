@@ -137,7 +137,9 @@ pub fn (mut mpv MPVPlayer) update_texture() {
 		}
 	}
 
-	mpv.i_texture.update_pixel_data(&mpv.i_pixels)
+	unsafe {
+		mpv.i_texture.update_pixel_data(&u8(&mpv.i_pixels)) // inb4 this used to work without the casting.
+	}
 }
 
 pub fn (mut mpv MPVPlayer) draw_texture() {
@@ -161,7 +163,10 @@ pub fn (mut mpv MPVPlayer) draw_overlay() {
 
 	// NOTE: lol
 	mpv.ctx.draw_text(5, c_win_height - c_win_font_size, '${int(mpv.i_video_position / 60.0)}:${int(mpv.i_video_position) % 60}/${int(mpv.i_video_duration / 60.0)}:${int(mpv.i_video_duration) % 60}',
-		color: gg.Color{255, 255, 255, 255}, align: .left, size: c_win_font_size)
+		color: gg.Color{255, 255, 255, 255}
+		align: .left
+		size: c_win_font_size
+	)
 }
 
 pub fn (mut mpv MPVPlayer) draw(_ voidptr) {
