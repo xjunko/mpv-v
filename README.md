@@ -1,8 +1,8 @@
 # World's Simplest Video Player
 
-![](https://cdn.discordapp.com/attachments/703552229680087042/1082187511973019688/image.png)
+![image](https://github.com/xjunko/mpv-v/assets/44401509/b20f65fb-9055-4b09-a62d-c5afdd782f3f)
+![image](https://github.com/xjunko/mpv-v/assets/44401509/2ff1f23c-731e-43e7-a9d5-5f98866eca27)
 
-![](https://cdn.discordapp.com/attachments/703552229680087042/1082187198109061120/2023-03-06_14-24.png)
 (it even works with pipe!!!!)
 
 # Building
