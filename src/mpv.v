@@ -167,7 +167,14 @@ pub fn (mut mpv MPVPlayer) draw_texture() {
 pub fn (mut mpv MPVPlayer) draw_overlay() {
 	t_res := mpv.ctx.window_size()
 
-	playing_at_str := '${int(mpv.i_video_position / 60.0):02}:${int(mpv.i_video_position) % 60:02}/${int(mpv.i_video_duration / 60.0):02}:${int(mpv.i_video_duration) % 60:02}'
+	current_minutes := int(mpv.i_video_position / 60.0)
+	current_seconds := int(mpv.i_video_position) % 60
+
+	total_minutes := int(mpv.i_video_duration / 60.0)
+	total_seconds := int(mpv.i_video_duration) % 60
+
+	playing_at_str := '${current_minutes:02}:${current_seconds:02}/${total_minutes:02}:${total_seconds:02}'
+
 	text_width := mpv.ctx.text_width(playing_at_str) + 10
 
 	// Overlay
