@@ -33,6 +33,8 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 	// Init MPV crap
 	mpv.i_mpv_handle = C.mpv_create()
 
+	C.mpv_set_option_string(mpv.i_mpv_handle, 'vo'.str, 'libmpv'.str)
+
 	if C.mpv_initialize(mpv.i_mpv_handle) < 0 {
 		panic('MPV init failed!')
 	}
@@ -50,7 +52,7 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 		panic('Failed to init mpv sw context.')
 	}
 
-	// Permanent hack
+	// Callbacks
 	on_mpv_events := fn [mut mpv] (_ voidptr) {
 		spawn mpv.on_mpv_events()
 	}
@@ -69,6 +71,9 @@ pub fn (mut mpv MPVPlayer) init(_ voidptr) {
 
 	//
 	mpv.play_video(mpv.video_path)
+
+	// gg
+	mpv.ctx.set_text_cfg(size: c_win_font_size)
 }
 
 pub fn (mut mpv MPVPlayer) play_video(path string) {
@@ -160,13 +165,16 @@ pub fn (mut mpv MPVPlayer) draw_texture() {
 }
 
 pub fn (mut mpv MPVPlayer) draw_overlay() {
+	t_res := mpv.ctx.window_size()
+
+	playing_at_str := '${int(mpv.i_video_position / 60.0):02}:${int(mpv.i_video_position) % 60:02}/${int(mpv.i_video_duration / 60.0):02}:${int(mpv.i_video_duration) % 60:02}'
+	text_width := mpv.ctx.text_width(playing_at_str) + 10
+
 	// Overlay
-	mpv.ctx.draw_rect_filled(0, c_win_height - c_win_font_size, 120, c_win_font_size,
+	mpv.ctx.draw_rect_filled(0, t_res.height - c_win_font_size, text_width, c_win_font_size,
 		gg.Color{0, 0, 0, 100})
 
-	// NOTE: lol
-	playing_at_str := '${int(mpv.i_video_position / 60.0)}:${int(mpv.i_video_position) % 60:02}/${int(mpv.i_video_duration / 60.0)}:${int(mpv.i_video_duration) % 60}'
-	mpv.ctx.draw_text(5, c_win_height - c_win_font_size, playing_at_str,
+	mpv.ctx.draw_text(5, t_res.height - c_win_font_size, playing_at_str,
 		color: gg.Color{255, 255, 255, 255}
 		align: .left
 		size: c_win_font_size
@@ -176,7 +184,6 @@ pub fn (mut mpv MPVPlayer) draw_overlay() {
 pub fn (mut mpv MPVPlayer) draw(_ voidptr) {
 	mpv.ctx.begin()
 
-	// The video itself
 	mpv.update_texture()
 	mpv.draw_texture()
 

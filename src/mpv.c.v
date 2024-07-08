@@ -49,6 +49,8 @@ pub fn C.mpv_create() &MPVHandle
 pub fn C.mpv_initialize(&MPVHandle) int
 pub fn C.mpv_destroy(&MPVHandle)
 
+pub fn C.mpv_set_option_string(&MPVHandle, &char, &char) int
+
 pub fn C.mpv_observe_property(&MPVHandle, u64, &char, int) int
 
 pub fn C.mpv_request_log_messages(&MPVHandle, &u8) int
@@ -59,7 +61,7 @@ pub fn C.mpv_render_context_update(&MPVRenderContext) u64
 pub fn C.mpv_render_context_free(&MPVRenderContext)
 
 pub fn C.mpv_set_wakeup_callback(&MPVHandle, &voidptr, &voidptr)
-pub fn C.mpv_render_context_set_update_callback(&MPVHandle, &voidptr, &voidptr)
+pub fn C.mpv_render_context_set_update_callback(&MPVRenderContext, &voidptr, &voidptr)
 
 pub fn C.mpv_command_async(&MPVHandle, u64, []&char) int
 
