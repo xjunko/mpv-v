@@ -20,6 +20,7 @@ bin/
 .env
 
 # vweb and database
+*.c
 *.db
 *.js
 
@@ -29,6 +30,7 @@ Observation
 
 # Local files
 mpv-v
+*_sw
 *.mp4
 *.mp3
 *.webm
