@@ -3,14 +3,12 @@ module main
 import gg
 import sync
 
-const (
-	c_win_width     = 1280
-	c_win_height    = 720
-	c_win_font_size = 30
-)
+const c_win_width = 1280
+const c_win_height = 720
+const c_win_font_size = 30
 
 //
-[heap]
+@[heap]
 pub struct MPVPlayer {
 mut:
 	i_mpv_handle  &MPVHandle        = unsafe { nil }
@@ -111,7 +109,7 @@ pub fn (mut mpv MPVPlayer) on_mpv_events() {
 	}
 }
 
-[direct_array_access]
+@[direct_array_access]
 pub fn (mut mpv MPVPlayer) update_texture() {
 	resolution := [c_win_width, c_win_height]
 
